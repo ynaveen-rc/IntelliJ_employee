@@ -85,10 +85,11 @@ public class LoginController {
         return "updateemployee.jsp";
     }
 
-    @PostMapping("/updateemployee/{empid}")
-    public String updateemployee(@ModelAttribute("employee") EmployeeDto empdto,
+    @GetMapping("/updateemployee")
+    public String updateemployee(@RequestParam Integer empid,
+                                 @ModelAttribute("employee") EmployeeDto empdto,
                                  Model model) {
-        Employees updateemp = emprepo.findById(empdto.getEmpid()).orElse(null);
+        Employees updateemp = emprepo.findById(empid).orElse(null);
         updateemp.setEmpname(empdto.getEmpname());
         updateemp.setEmpmail(empdto.getEmpmail());
         updateemp.setDepartment(empdto.getDepartment());
@@ -97,12 +98,14 @@ public class LoginController {
         return myfunc(updateemp.getManager(), model);
     }
 
-    @DeleteMapping("/deleteemployee/{empid}")
-    public String deleteemployee(@RequestParam("empid") Integer empid, Model model) {
-        Employees employee = emprepo.findById(empid).orElse(null);
-        String username = employee.getManager();
-        emprepo.delete(employee);
-        return myfunc(username, model);
+    @GetMapping("/deleteemployee")
+    public String deleteemployee(@RequestParam Integer empid, Model model) {
+//        Employees employee = emprepo.findById(empid).orElse(null);
+//        String username = employee.getManager();
+//        emprepo.delete(employee);
+        emprepo.deleteById(empid);
+//        return myfunc(username, model);
+        return "profilepage.jsp";
     }
 
 }

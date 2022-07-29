@@ -6,7 +6,7 @@
     <title>Employee management system</title>
 </head>
 <body>
-<form method="post" action="updateemployee/${employee.empid}" modelAttribute="employee">
+<form method="get" action="/updateemployee?empid=${employee.empid}" modelAttribute="employee">
     <input type="text" placeholder="Employee Id" name="empid" value="${employee.empid}"><br><br>
     <input type="text" placeholder="Employee Name" name="empname"><br><br>
     <input type="email" placeholder="Mail Id" name="empmail"><br><br>
