@@ -6,10 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.ws.rs.PathParam;
+import java.util.List;
+
 @Controller
 public class LoginController {
     @Autowired
     UsersRepo repo;
+    @Autowired
+    EmployeesRepo emprepo;
 
     @RequestMapping("/")
     public ModelAndView loginmethod() {
@@ -19,7 +24,7 @@ public class LoginController {
 
     @PostMapping("/home")
     public String logoutmethod() {
-        return "loginpage.jsp";
+        return "redirect:/";
     }
 
     @PostMapping("/newuser")
@@ -39,11 +44,65 @@ public class LoginController {
         if (users == null) {
             return "redirect:/";
         }
-        model.addAttribute("users", users);
-        if (users.getPassword().equals(password)) {
-            return "profilepage.jsp";
+        if (!users.getPassword().equals(password)) {
+            return "redirect:/";
         }
-        return "redirect:/";
+        //model.addAttribute("users", users);
+        List<Employees> list = emprepo.findByManager(username);
+        model.addAttribute("list", list);
+        //System.out.println(list);
+        return "profilepage.jsp";
+    }
+
+    @GetMapping("/newemployeeform")
+    public String showemployeeform() {
+        return "newemployee.jsp";
+    }
+
+    private String myfunc(String manager, Model model) {
+        String username = manager;
+        Users user = repo.findById(username).orElse(null);
+        List<Employees> list = emprepo.findByManager(username);
+        model.addAttribute("list", list);
+        return "profilepage.jsp";
+    }
+
+    @PostMapping("/addemployee")
+    public String addemployee(@ModelAttribute("employee") EmployeeDto empdto, Model model) {
+        Employees employee = new Employees();
+        employee.setEmpname(empdto.getEmpname());
+        employee.setEmpmail(empdto.getEmpmail());
+        employee.setDepartment(empdto.getDepartment());
+        employee.setManager(empdto.getManager());
+        emprepo.save(employee);
+        return myfunc(employee.getManager(), model);
+    }
+
+    @GetMapping("/updateemployeeform")
+    public String updateemployeeform(@RequestParam Integer empid, Model model) {
+        Employees employee = emprepo.findById(empid).get();
+        model.addAttribute("employee", employee);
+        return "updateemployee.jsp";
+    }
+
+    @PostMapping("/updateemployee/{empid}")
+    public String updateemployee(@ModelAttribute("employee") EmployeeDto empdto,
+                                 Model model) {
+        Employees updateemp = emprepo.findById(empdto.getEmpid()).orElse(null);
+        updateemp.setEmpname(empdto.getEmpname());
+        updateemp.setEmpmail(empdto.getEmpmail());
+        updateemp.setDepartment(empdto.getDepartment());
+        updateemp.setManager(empdto.getManager());
+        emprepo.save(updateemp);
+        return myfunc(updateemp.getManager(), model);
+    }
+
+    @DeleteMapping("/deleteemployee/{empid}")
+    public String deleteemployee(@RequestParam("empid") Integer empid, Model model) {
+        Employees employee = emprepo.findById(empid).orElse(null);
+        String username = employee.getManager();
+        emprepo.delete(employee);
+        return myfunc(username, model);
     }
 
 }

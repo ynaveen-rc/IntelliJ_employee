@@ -7,14 +7,14 @@
 </head>
 <body>
 <form method="post" action="profile">
-    User name : <input type="text" name="username"><br><br>
-    Password : <input type="password" name="password"><br><br>
+    <input type="text" placeholder="User Name" name="username"><br><br>
+    <input type="password" placeholder="Password" name="password"><br><br>
     <input type="submit" value="Login"><br><br>
 </form>
 <form method="post" action="newuser">
-    Register below for new user<br><br>
-    User name (New): <input type="text" name="username"><br><br>
-    Password (New): <input type="password" name="password"><br><br>
+    <br><br>Register below for new user<br><br>
+    <input type="text" placeholder="User Name (New)" name="username"><br><br>
+    <input type="password" placeholder="Password (New)" name="password"><br><br>
     <input type="submit" value="New User">
 </form>
 </body>
