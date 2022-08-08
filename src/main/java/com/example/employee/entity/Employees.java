@@ -1,15 +1,32 @@
-package com.example.employee;
+package com.example.employee.entity;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-@Component
-public class EmployeeDto {
+@Entity
+//@Table(name = "employee")
+public class Employees {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer empid;
     private String empname;
     private String empmail;
     private String department;
     private String manager;
+
+    public Employees() {
+
+    }
+
+    public Employees(String empname, String empmail, String department, String manager) {
+        this.empname = empname;
+        this.empmail = empmail;
+        this.department = department;
+        this.manager = manager;
+    }
 
     public Integer getEmpid() {
         return empid;
@@ -53,6 +70,6 @@ public class EmployeeDto {
 
     @Override
     public String toString() {
-        return "EmployeeDto{" + "empname='" + empname + '\'' + ", empmail='" + empmail + '\'' + ", department='" + department + '\'' + ", manager='" + manager + '\'' + '}';
+        return "Employees{" + "empid=" + empid + ", empname='" + empname + '\'' + ", empmail='" + empmail + '\'' + ", department='" + department + '\'' + ", manager='" + manager + '\'' + '}';
     }
 }

@@ -1,4 +1,4 @@
-package com.example.employee;
+package com.example.employee.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
