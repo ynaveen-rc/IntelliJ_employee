@@ -34,7 +34,7 @@
         </c:forEach>
     </table>
 </div>
-<form method="post" action="home">
+<form method="get" action="logout-success">
     <input type="submit" value="Logout">
 </form>
 </body>
