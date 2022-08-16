@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,10 +18,13 @@ public class MyAuthProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         String name = authentication.getName();
-
+        String password = authentication.getCredentials() != null ? authentication.getCredentials().toString() : "";
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(name);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(name, authentication.getCredentials());
-        token.setDetails(authentication.getDetails());
+        if (!userDetails.getPassword().equals(password)) {
+            throw new UsernameNotFoundException("Invalid password");
+        }
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(name, password, userDetails.getAuthorities());
+//        token.setDetails(authentication.getDetails());
         return token;
     }
 
