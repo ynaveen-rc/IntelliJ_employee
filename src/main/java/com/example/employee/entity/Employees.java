@@ -1,17 +1,16 @@
 package com.example.employee.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Entity
-//@Table(name = "employee")
+
+@Document(collection = "employees")
 public class Employees {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer empid;
+    @Transient
+    public static final String SEQUENCE_NAME = "empSequence";
+    @MongoId
+    private int id;
     private String empname;
     private String empmail;
     private String department;
@@ -28,12 +27,12 @@ public class Employees {
         this.manager = manager;
     }
 
-    public Integer getEmpid() {
-        return empid;
+    public int getId() {
+        return id;
     }
 
-    public void setEmpid(Integer empid) {
-        this.empid = empid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmpname() {
@@ -70,6 +69,6 @@ public class Employees {
 
     @Override
     public String toString() {
-        return "Employees{" + "empid=" + empid + ", empname='" + empname + '\'' + ", empmail='" + empmail + '\'' + ", department='" + department + '\'' + ", manager='" + manager + '\'' + '}';
+        return "Employees{" + "id=" + id + ", empname='" + empname + '\'' + ", empmail='" + empmail + '\'' + ", department='" + department + '\'' + ", manager='" + manager + '\'' + '}';
     }
 }

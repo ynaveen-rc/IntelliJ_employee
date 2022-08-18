@@ -6,8 +6,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component
 public class MyAuthProvider implements AuthenticationProvider {
@@ -17,15 +18,13 @@ public class MyAuthProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        String name = authentication.getName();
-        String password = authentication.getCredentials() != null ? authentication.getCredentials().toString() : "";
+        String name = (String) authentication.getPrincipal();
+        String password = (String) authentication.getCredentials();
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(name);
-        if (!userDetails.getPassword().equals(password)) {
-            throw new UsernameNotFoundException("Invalid password");
+        if (userDetails.getPassword().equals(password)) {
+            return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
         }
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(name, password, userDetails.getAuthorities());
-//        token.setDetails(authentication.getDetails());
-        return token;
+        return null;
     }
 
     @Override

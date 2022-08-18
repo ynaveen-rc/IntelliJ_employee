@@ -23,24 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .headers().frameOptions().disable()
                 .and()
-                .authorizeRequests().antMatchers("/loginpage", "/newuser", "/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/loginpage").permitAll()
-//                .loginProcessingUrl("/login")
-//                .defaultSuccessUrl("/employee", true)
-//                .failureUrl("/loginpage?error=true")
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout-success")
-//                .logoutSuccessUrl("/loginpage?logout=true")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID")
-//                .permitAll()
-                .and()
+                .authorizeRequests().antMatchers("/login", "/newuser").permitAll()
+                .anyRequest().authenticated();
+        http
                 .httpBasic();
-//                .and()
-//                .csrf().disable();
+        http
+                .csrf().disable();
     }
 }

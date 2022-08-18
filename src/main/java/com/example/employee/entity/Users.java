@@ -1,21 +1,21 @@
 package com.example.employee.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Entity
+@Document(collection = "users")
 public class Users {
-    @Id
-    private String username;
+    @MongoId
+    private String id;
     private String password;
 
-    public String getUsername() {
-        return username;
+    public String getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPassword() {
@@ -28,6 +28,6 @@ public class Users {
 
     @Override
     public String toString() {
-        return "Users{" + "username='" + username + '\'' + ", password='" + password + '\'' + '}';
+        return "Users{" + "id='" + id + '\'' + ", password='" + password + '\'' + '}';
     }
 }
