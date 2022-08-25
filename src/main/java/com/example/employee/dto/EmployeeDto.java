@@ -5,34 +5,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmployeeDto {
 
-    private Integer empid;
-    private String empname;
-    private String empmail;
+    private String empName;
+    private String empMail;
     private String department;
     private String manager;
 
-    public Integer getEmpid() {
-        return empid;
+    public String getEmpName() {
+        return empName;
     }
 
-    public void setEmpid(Integer empid) {
-        this.empid = empid;
+    public void setEmpName(String empName) {
+        this.empName = empName;
     }
 
-    public String getEmpname() {
-        return empname;
+    public String getEmpMail() {
+        return empMail;
     }
 
-    public void setEmpname(String empname) {
-        this.empname = empname;
-    }
-
-    public String getEmpmail() {
-        return empmail;
-    }
-
-    public void setEmpmail(String empmail) {
-        this.empmail = empmail;
+    public void setEmpMail(String empMail) {
+        this.empMail = empMail;
     }
 
     public String getDepartment() {
@@ -53,6 +44,11 @@ public class EmployeeDto {
 
     @Override
     public String toString() {
-        return "EmployeeDto{" + "empname='" + empname + '\'' + ", empmail='" + empmail + '\'' + ", department='" + department + '\'' + ", manager='" + manager + '\'' + '}';
+        return "EmployeeDto{" +
+                "empName='" + empName + '\'' +
+                ", empMail='" + empMail + '\'' +
+                ", department='" + department + '\'' +
+                ", manager='" + manager + '\'' +
+                '}';
     }
 }

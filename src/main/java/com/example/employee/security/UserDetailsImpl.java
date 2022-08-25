@@ -1,6 +1,6 @@
 package com.example.employee.security;
 
-import com.example.employee.entity.Users;
+import com.example.employee.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +9,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class UserDetailsImpl implements UserDetails {
-    private Users user;
+    private User user;
 
-    public UserDetailsImpl(Users user) {
+    public UserDetailsImpl(User user) {
         this.user = user;
     }
 

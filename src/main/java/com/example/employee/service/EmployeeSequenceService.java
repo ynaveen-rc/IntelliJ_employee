@@ -1,6 +1,6 @@
 package com.example.employee.service;
 
-import com.example.employee.entity.EmployeeSequence;
+import com.example.employee.model.EmployeeSequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;

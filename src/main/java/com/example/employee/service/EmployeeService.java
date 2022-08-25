@@ -1,16 +1,20 @@
 package com.example.employee.service;
 
-import com.example.employee.entity.Employees;
+import com.example.employee.dto.EmployeeDto;
+import com.example.employee.exception.EmployeeNotFoundException;
+import com.example.employee.model.Employee;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    List<Employees> getEmployee(String username);
+    List<Employee> getAllEmployeeByManager(String manager);
 
-    void saveEmployee(Employees employee);
+    Employee getEmployeeById(Integer id) throws EmployeeNotFoundException;
 
-    Employees getEmployeeById(Integer empid);
+    Employee saveEmployee(EmployeeDto employeeDto);
 
-    void deleteEmployee(Employees employee);
+    Employee updateEmployeeById(Integer id, EmployeeDto employeeDto) throws EmployeeNotFoundException;
+
+    void deleteEmployeeById(Integer id) throws EmployeeNotFoundException;
 }
