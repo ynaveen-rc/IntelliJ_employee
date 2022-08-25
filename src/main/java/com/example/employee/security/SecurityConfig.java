@@ -1,25 +1,26 @@
 package com.example.employee.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.employee.service.UserServiceImpl;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private MyAuthProvider myAuthProvider;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(myAuthProvider);
+public class SecurityConfig {
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserServiceImpl();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        AuthenticationProvider authenticationProvider = new AppAuthProvider(userDetailsService());
+
         http
                 .headers().frameOptions().disable()
                 .and()
@@ -29,5 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
         http
                 .csrf().disable();
+        http.authenticationProvider(authenticationProvider);
+        return http.build();
     }
 }
