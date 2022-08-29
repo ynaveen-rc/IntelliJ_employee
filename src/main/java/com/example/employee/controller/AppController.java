@@ -1,8 +1,9 @@
 package com.example.employee.controller;
 
 import com.example.employee.dto.EmployeeDto;
+import com.example.employee.dto.ResponseDto;
 import com.example.employee.dto.UserDto;
-import com.example.employee.exception.EmployeeNotFoundException;
+import com.example.employee.exception.AppGeneralException;
 import com.example.employee.model.Employee;
 import com.example.employee.service.EmployeeServiceImpl;
 import com.example.employee.service.UserServiceImpl;
@@ -22,50 +23,54 @@ public class AppController {
     EmployeeServiceImpl employeeServiceImpl;
 
     @PostMapping("/newuser")
-    public ResponseEntity createUser(@RequestBody UserDto userDto) {
-        if (!userDto.getId().isEmpty() && !userDto.getPassword().isEmpty()) {
-            userServiceImpl.saveUser(userDto);
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseDto createUser(@RequestBody UserDto userDto) throws AppGeneralException {
+        userServiceImpl.saveUser(userDto);
+        return new ResponseDto(null, HttpStatus.CREATED.value());
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(Authentication authentication) {
+    public ResponseEntity<Object> login(Authentication authentication) {
         if (authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDto(null, HttpStatus.OK.value()), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new ResponseDto(null, HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/employee")
-    public ResponseEntity<List<Employee>> getAllEmployee(Authentication authentication) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDto getAllEmployee(Authentication authentication) {
         List<Employee> list = employeeServiceImpl.getAllEmployeeByManager(authentication.getName());
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return new ResponseDto(list, HttpStatus.OK.value());
     }
 
     @GetMapping("/employee/{id}")
-    public ResponseEntity<Employee> getEmployee(@PathVariable("id") Integer id) throws EmployeeNotFoundException {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDto getEmployee(@PathVariable("id") Integer id) throws AppGeneralException {
         Employee employee = employeeServiceImpl.getEmployeeById(id);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        return new ResponseDto(employee, HttpStatus.OK.value());
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeDto employeeDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseDto addEmployee(@RequestBody EmployeeDto employeeDto) {
         Employee employee = employeeServiceImpl.saveEmployee(employeeDto);
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
+        return new ResponseDto(employee, HttpStatus.CREATED.value());
     }
 
     @PutMapping("/employee/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Integer id,
-                                                   @RequestBody EmployeeDto employeeDto) throws EmployeeNotFoundException {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDto updateEmployee(@PathVariable("id") Integer id,
+                                      @RequestBody EmployeeDto employeeDto) throws AppGeneralException {
         Employee updateEmp = employeeServiceImpl.updateEmployeeById(id, employeeDto);
-        return new ResponseEntity<>(updateEmp, HttpStatus.OK);
+        return new ResponseDto(updateEmp, HttpStatus.OK.value());
     }
 
     @DeleteMapping("/employee/{id}")
-    public ResponseEntity deleteEmployee(@PathVariable("id") Integer id) throws EmployeeNotFoundException {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDto deleteEmployee(@PathVariable("id") Integer id) throws AppGeneralException {
         employeeServiceImpl.deleteEmployeeById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseDto(null, HttpStatus.OK.value());
     }
 
 }

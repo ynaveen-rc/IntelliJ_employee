@@ -1,19 +1,17 @@
 package com.example.employee.exception;
 
+import com.example.employee.dto.ErrorDto;
+import com.example.employee.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.HashMap;
 
 @RestControllerAdvice
 public class AppExceptionHandler {
-
-    @ExceptionHandler(EmployeeNotFoundException.class)
-    public ResponseEntity handleEmployeeNotFoundException(EmployeeNotFoundException exception) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("errorMessage", exception.getMessage());
-        return new ResponseEntity<>(hashMap, HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(AppGeneralException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseDto handleAppGeneralException(AppGeneralException exception) {
+        return new ResponseDto(null, HttpStatus.INTERNAL_SERVER_ERROR.value(), new ErrorDto(ErrorCode.valueOf(exception.getMessage())));
     }
 }

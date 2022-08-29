@@ -1,7 +1,7 @@
 package com.example.employee.service;
 
 import com.example.employee.dto.EmployeeDto;
-import com.example.employee.exception.EmployeeNotFoundException;
+import com.example.employee.exception.AppGeneralException;
 import com.example.employee.model.Employee;
 import com.example.employee.repository.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(Integer id) throws EmployeeNotFoundException {
+    public Employee getEmployeeById(Integer id) throws AppGeneralException {
         Employee employee = employeeRepo.findById(id).orElse(null);
         if (employee == null) {
-            throw new EmployeeNotFoundException("Employee not found with id: " + id);
+            throw new AppGeneralException("EMPLOYEE_NOT_FOUND");
         }
         return employee;
     }
@@ -43,10 +43,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployeeById(Integer id, EmployeeDto employeeDto) throws EmployeeNotFoundException {
+    public Employee updateEmployeeById(Integer id, EmployeeDto employeeDto) throws AppGeneralException {
         Employee updateEmp = employeeRepo.findById(id).orElse(null);
         if (updateEmp == null) {
-            throw new EmployeeNotFoundException("Employee not found with id: " + id);
+            throw new AppGeneralException("EMPLOYEE_NOT_FOUND");
         }
         updateEmp.setEmpName(employeeDto.getEmpName());
         updateEmp.setEmpMail(employeeDto.getEmpMail());
@@ -57,10 +57,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployeeById(Integer id) throws EmployeeNotFoundException {
+    public void deleteEmployeeById(Integer id) throws AppGeneralException {
         Employee employee = employeeRepo.findById(id).orElse(null);
         if (employee == null) {
-            throw new EmployeeNotFoundException("Employee not found with id: " + id);
+            throw new AppGeneralException("EMPLOYEE_NOT_FOUND");
         }
         employeeRepo.delete(employee);
     }

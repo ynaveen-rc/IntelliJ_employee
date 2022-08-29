@@ -1,6 +1,7 @@
 package com.example.employee.service;
 
 import com.example.employee.dto.UserDto;
+import com.example.employee.exception.AppGeneralException;
 import com.example.employee.model.User;
 import com.example.employee.repository.UserRepo;
 import com.example.employee.security.UserDetailsImpl;
@@ -16,7 +17,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     UserRepo userRepo;
 
     @Override
-    public void saveUser(UserDto userDto) {
+    public void saveUser(UserDto userDto) throws AppGeneralException {
+        if (userDto.getId().isEmpty() || userDto.getPassword().isEmpty()) {
+            throw new AppGeneralException("USER_NOT_VALID");
+        }
+        if (userRepo.findById(userDto.getId()).isPresent()) {
+            throw new AppGeneralException("USER_ALREADY_EXISTS");
+        }
         User user = new User();
         user.setId(userDto.getId());
         user.setPassword(userDto.getPassword());
