@@ -16,5 +16,5 @@ public interface EmployeeService {
 
     Employee updateEmployeeById(Integer id, EmployeeDto employeeDto) throws AppGeneralException;
 
-    void deleteEmployeeById(Integer id) throws AppGeneralException;
+    Employee deleteEmployeeById(Integer id) throws AppGeneralException;
 }

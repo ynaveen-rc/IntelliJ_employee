@@ -5,6 +5,7 @@ import com.example.employee.dto.ResponseDto;
 import com.example.employee.dto.UserDto;
 import com.example.employee.exception.AppGeneralException;
 import com.example.employee.model.Employee;
+import com.example.employee.model.User;
 import com.example.employee.service.EmployeeServiceImpl;
 import com.example.employee.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class AppController {
     @Autowired
@@ -25,12 +29,20 @@ public class AppController {
     @PostMapping("/newuser")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDto createUser(@RequestBody UserDto userDto) throws AppGeneralException {
-        userServiceImpl.saveUser(userDto);
+        User user = userServiceImpl.saveUser(userDto);
         return new ResponseDto(null, HttpStatus.CREATED.value());
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(Authentication authentication) {
+        if (authentication.isAuthenticated()) {
+            return new ResponseEntity<>(new ResponseDto(null, HttpStatus.OK.value()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponseDto(null, HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/performLogout")
+    public ResponseEntity<Object> logout(Authentication authentication) {
         if (authentication.isAuthenticated()) {
             return new ResponseEntity<>(new ResponseDto(null, HttpStatus.OK.value()), HttpStatus.OK);
         }
@@ -69,7 +81,7 @@ public class AppController {
     @DeleteMapping("/employee/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDto deleteEmployee(@PathVariable("id") Integer id) throws AppGeneralException {
-        employeeServiceImpl.deleteEmployeeById(id);
+        Employee employee = employeeServiceImpl.deleteEmployeeById(id);
         return new ResponseDto(null, HttpStatus.OK.value());
     }
 

@@ -10,6 +10,16 @@ public class EmployeeDto {
     private String department;
     private String manager;
 
+    public EmployeeDto() {
+    }
+
+    public EmployeeDto(String empName, String empMail, String department, String manager) {
+        this.empName = empName;
+        this.empMail = empMail;
+        this.department = department;
+        this.manager = manager;
+    }
+
     public String getEmpName() {
         return empName;
     }

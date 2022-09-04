@@ -57,12 +57,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployeeById(Integer id) throws AppGeneralException {
+    public Employee deleteEmployeeById(Integer id) throws AppGeneralException {
         Employee employee = employeeRepo.findById(id).orElse(null);
         if (employee == null) {
             throw new AppGeneralException("EMPLOYEE_NOT_FOUND");
         }
         employeeRepo.delete(employee);
+        return employee;
     }
 
 }

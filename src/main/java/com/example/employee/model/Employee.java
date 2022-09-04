@@ -20,7 +20,8 @@ public class Employee {
 
     }
 
-    public Employee(String empName, String empMail, String department, String manager) {
+    public Employee(int id, String empName, String empMail, String department, String manager) {
+        this.id = id;
         this.empName = empName;
         this.empMail = empMail;
         this.department = department;

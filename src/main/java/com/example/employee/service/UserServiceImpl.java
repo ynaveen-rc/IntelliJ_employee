@@ -17,17 +17,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     UserRepo userRepo;
 
     @Override
-    public void saveUser(UserDto userDto) throws AppGeneralException {
+    public User saveUser(UserDto userDto) throws AppGeneralException {
         if (userDto.getId().isEmpty() || userDto.getPassword().isEmpty()) {
             throw new AppGeneralException("USER_NOT_VALID");
         }
         if (userRepo.findById(userDto.getId()).isPresent()) {
             throw new AppGeneralException("USER_ALREADY_EXISTS");
         }
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setPassword(userDto.getPassword());
+        User user = new User(userDto.getId(), userDto.getPassword());
         userRepo.save(user);
+        return user;
     }
 
     @Override
