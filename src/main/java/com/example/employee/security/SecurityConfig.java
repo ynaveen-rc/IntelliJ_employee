@@ -34,18 +34,19 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests().antMatchers("/login", "/newuser").permitAll()
-                .anyRequest().authenticated();
-//                .and()
-//                .logout()
-//                .logoutSuccessHandler(new LogoutSuccessHandler() {
-//                    @Override
-//                    public void onLogoutSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication arg2) throws IOException, ServletException {
-//                        System.out.println("***onLogoutSuccess***");
-//                    }
-//                })
-//                .permitAll()
-//                .clearAuthentication(true)
-//                .deleteCookies("JSESSIONID");
+                .anyRequest().authenticated()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication arg2) throws IOException, ServletException {
+                        System.out.println("***onLogoutSuccess***");
+                    }
+                })
+                .permitAll()
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID");
         http
                 .httpBasic();
         http

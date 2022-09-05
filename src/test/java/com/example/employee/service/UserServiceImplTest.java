@@ -5,17 +5,19 @@ import com.example.employee.dto.UserDto;
 import com.example.employee.exception.AppGeneralException;
 import com.example.employee.model.User;
 import com.example.employee.repository.UserRepo;
+import com.example.employee.security.UserDetailsImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UserServiceImplTest {
@@ -31,7 +33,7 @@ class UserServiceImplTest {
     public void getUserByIdTest() {
         String id = "green";
         when(userRepo.findById(id)).thenReturn(Optional.ofNullable(actualUser));
-        assertThat(expectedUser.equals(userServiceImpl.getUserById(id)));
+        assertThat(expectedUser.equals(userServiceImpl.getUserById(id))).isEqualTo(true);
     }
 
     @Test
@@ -39,9 +41,9 @@ class UserServiceImplTest {
         UserDto userDto = new UserDto("green", "222");
         when(userRepo.save(actualUser)).thenReturn(actualUser);
         try {
-            assertThat(expectedUser.equals(userServiceImpl.saveUser(userDto)));
+            assertThat(expectedUser.equals(userServiceImpl.saveUser(userDto))).isEqualTo(true);
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -53,7 +55,7 @@ class UserServiceImplTest {
             userServiceImpl.saveUser(userDto);
             fail();
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -64,12 +66,13 @@ class UserServiceImplTest {
         when(userRepo.findById(id)).thenReturn(Optional.of(actualUser));
         when(userRepo.save(actualUser)).thenReturn(actualUser);
         try {
-            if (expectedUser.equals(actualUser)) {
+            boolean equality = expectedUser.equals(actualUser);
+            if (!equality) {
                 fail();
             }
             userServiceImpl.saveUser(userDto);
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -77,7 +80,9 @@ class UserServiceImplTest {
     public void loadUserByUsernameSuccessTest() {
         String id = "green";
         when(userRepo.findById(id)).thenReturn(Optional.ofNullable(actualUser));
-        assertThat(expectedUser.equals(userServiceImpl.loadUserByUsername(id)));
+        UserDetails expectedUserDetails = new UserDetailsImpl(expectedUser);
+        UserDetails actualUserDetails = userServiceImpl.loadUserByUsername(id);
+        assertThat(expectedUserDetails.equals(actualUserDetails)).isEqualTo(true);
     }
 
     @Test
@@ -88,7 +93,7 @@ class UserServiceImplTest {
             userServiceImpl.loadUserByUsername("white");
             fail();
         } catch (UsernameNotFoundException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 }

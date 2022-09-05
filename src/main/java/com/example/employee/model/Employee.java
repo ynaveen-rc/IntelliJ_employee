@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.util.Objects;
+
 
 @Document(collection = "employee")
 public class Employee {
@@ -77,5 +79,18 @@ public class Employee {
                 ", department='" + department + '\'' +
                 ", manager='" + manager + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id && empName.equals(employee.empName) && empMail.equals(employee.empMail) && department.equals(employee.department) && manager.equals(employee.manager);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, empName, empMail, department, manager);
     }
 }

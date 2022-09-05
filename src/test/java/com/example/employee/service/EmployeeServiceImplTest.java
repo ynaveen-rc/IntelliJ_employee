@@ -34,7 +34,9 @@ class EmployeeServiceImplTest {
     public void getAllEmployeeByManagerTest() {
         String manager = "green";
         when(employeeRepo.findByManager(manager)).thenReturn(actualList);
-        assertThat(expectedList.equals(employeeServiceImpl.getAllEmployeeByManager(manager)));
+        List<Employee> list = employeeServiceImpl.getAllEmployeeByManager(manager);
+        assertThat(expectedList.get(0).equals(list.get(0))).isEqualTo(true);
+        assertThat(expectedList.get(1).equals(list.get(1))).isEqualTo(true);
     }
 
     @Test
@@ -43,9 +45,9 @@ class EmployeeServiceImplTest {
         when(employeeRepo.findById(id)).thenReturn(Optional.ofNullable(actualList.get(0)));
         try {
             Employee employee = employeeServiceImpl.getEmployeeById(id);
-            assertThat(expectedList.get(0).equals(employee));
+            assertThat(expectedList.get(0).equals(employee)).isEqualTo(true);
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -56,7 +58,7 @@ class EmployeeServiceImplTest {
             Employee employee = employeeServiceImpl.getEmployeeById(2);
             fail();
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -66,7 +68,7 @@ class EmployeeServiceImplTest {
         Employee employee = actualList.get(0);
         when(employeeRepo.save(employee)).thenReturn(employee);
         when(employeeSequenceService.getSequenceNumber(Employee.SEQUENCE_NAME)).thenReturn(1);
-        assertThat(expectedList.get(0).equals(employeeServiceImpl.saveEmployee(employeeDto)));
+        assertThat(expectedList.get(0).equals(employeeServiceImpl.saveEmployee(employeeDto))).isEqualTo(true);
     }
 
     @Test
@@ -78,9 +80,9 @@ class EmployeeServiceImplTest {
         when(employeeRepo.save(employee)).thenReturn(employee);
         try {
             Employee updateEmp = employeeServiceImpl.updateEmployeeById(id, employeeDto);
-            assertThat(expectedList.get(2).equals(updateEmp));
+            assertThat(expectedList.get(2).equals(updateEmp)).isEqualTo(true);
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -94,7 +96,7 @@ class EmployeeServiceImplTest {
             Employee updateEmp = employeeServiceImpl.updateEmployeeById(2, employeeDto);
             fail();
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -108,7 +110,7 @@ class EmployeeServiceImplTest {
             employeeServiceImpl.deleteEmployeeById(id);
             verify(employeeRepo, times(1)).delete(employee);
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 
@@ -121,7 +123,7 @@ class EmployeeServiceImplTest {
             employeeServiceImpl.deleteEmployeeById(2);
             fail();
         } catch (AppGeneralException ex) {
-            assertThat(ex.getMessage());
+            assertThat(ex.getMessage()).isNotEmpty();
         }
     }
 }

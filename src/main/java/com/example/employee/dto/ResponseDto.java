@@ -1,6 +1,7 @@
 package com.example.employee.dto;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class ResponseDto {
     private Date timeStamp;
@@ -38,5 +39,18 @@ public class ResponseDto {
 
     public ErrorDto getError() {
         return error;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResponseDto that = (ResponseDto) o;
+        return Objects.equals(httpStatus, that.httpStatus) && Objects.equals(data, that.data) && Objects.equals(error, that.error);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(httpStatus, data, error);
     }
 }

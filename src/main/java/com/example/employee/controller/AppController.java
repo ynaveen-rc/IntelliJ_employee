@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -41,12 +39,8 @@ public class AppController {
         return new ResponseEntity<>(new ResponseDto(null, HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
     }
 
-    @PostMapping("/performLogout")
-    public ResponseEntity<Object> logout(Authentication authentication) {
-        if (authentication.isAuthenticated()) {
-            return new ResponseEntity<>(new ResponseDto(null, HttpStatus.OK.value()), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new ResponseDto(null, HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
+    @PostMapping("/logout")
+    public void logout(Authentication authentication) {
     }
 
     @GetMapping("/employee")
