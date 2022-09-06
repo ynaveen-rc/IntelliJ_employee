@@ -3,38 +3,38 @@ package com.example.employee.dto;
 import java.util.Date;
 import java.util.Objects;
 
-public class ResponseDto {
+public class ResponseDto<T> {
     private Date timeStamp;
     private Integer httpStatus;
-    private Object data;
+    private T data;
     private ErrorDto error;
 
     public ResponseDto() {
     }
 
-    public ResponseDto(Object data, Integer httpStatus) {
+    public ResponseDto(T data, Integer httpStatus) {
         this.data = data;
         this.httpStatus = httpStatus;
         this.timeStamp = new Date();
     }
 
-    public ResponseDto(Object data, Integer httpStatus, ErrorDto error) {
+    public ResponseDto(T data, Integer httpStatus, ErrorDto error) {
         this.data = data;
         this.httpStatus = httpStatus;
         this.timeStamp = new Date();
         this.error = error;
     }
 
-    public Object getData() {
-        return data;
+    public Date getTimeStamp() {
+        return timeStamp;
     }
 
     public Integer getHttpStatus() {
         return httpStatus;
     }
 
-    public Date getTimeStamp() {
-        return timeStamp;
+    public T getData() {
+        return data;
     }
 
     public ErrorDto getError() {
@@ -45,7 +45,7 @@ public class ResponseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ResponseDto that = (ResponseDto) o;
+        ResponseDto<?> that = (ResponseDto<?>) o;
         return Objects.equals(httpStatus, that.httpStatus) && Objects.equals(data, that.data) && Objects.equals(error, that.error);
     }
 

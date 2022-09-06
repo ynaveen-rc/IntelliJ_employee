@@ -40,7 +40,7 @@ class AppControllerTest {
     @Test
     public void createUserTest() {
         UserDto userDto = new UserDto("green", "222");
-        ResponseDto responseDto = new ResponseDto(null, HttpStatus.CREATED.value());
+        ResponseDto<User> responseDto = new ResponseDto<>(null, HttpStatus.CREATED.value());
         try {
             when(userServiceImpl.saveUser(userDto)).thenReturn(actualUser);
             assertThat(responseDto.equals(appController.createUser(userDto))).isEqualTo(true);
@@ -53,14 +53,14 @@ class AppControllerTest {
     public void getAllEmployeeTest() {
         String manager = "green";
         Authentication authentication = new UsernamePasswordAuthenticationToken(manager, null, new ArrayList<>());
-        ResponseDto responseDto = new ResponseDto(expectedList, HttpStatus.OK.value());
+        ResponseDto<List<Employee>> responseDto = new ResponseDto<>(expectedList, HttpStatus.OK.value());
         when(employeeServiceImpl.getAllEmployeeByManager(manager)).thenReturn(actualList);
         assertThat(responseDto.equals(appController.getAllEmployee(authentication))).isEqualTo(true);
     }
 
     @Test
     public void getEmployeeTest() {
-        ResponseDto responseDto = new ResponseDto(expectedList.get(0), HttpStatus.OK.value());
+        ResponseDto<Employee> responseDto = new ResponseDto<>(expectedList.get(0), HttpStatus.OK.value());
         try {
             when(employeeServiceImpl.getEmployeeById(1)).thenReturn(actualList.get(0));
             assertThat(responseDto.equals(appController.getEmployee(1))).isEqualTo(true);
@@ -72,7 +72,7 @@ class AppControllerTest {
     @Test
     public void addEmployeeTest() {
         EmployeeDto employeeDto = new EmployeeDto("asd", "asd@demo.co", "it", "green");
-        ResponseDto responseDto = new ResponseDto(expectedList.get(0), HttpStatus.CREATED.value());
+        ResponseDto<Employee> responseDto = new ResponseDto<>(expectedList.get(0), HttpStatus.CREATED.value());
         when(employeeServiceImpl.saveEmployee(employeeDto)).thenReturn(actualList.get(0));
         assertThat(responseDto.equals(appController.addEmployee(employeeDto))).isEqualTo(true);
     }
@@ -80,7 +80,7 @@ class AppControllerTest {
     @Test
     public void updateEmployeeTest() {
         EmployeeDto employeeDto = new EmployeeDto("dsa", "dsa@demo.co", "it", "green");
-        ResponseDto responseDto = new ResponseDto(expectedList.get(2), HttpStatus.OK.value());
+        ResponseDto<Employee> responseDto = new ResponseDto<>(expectedList.get(2), HttpStatus.CREATED.value());
         try {
             when(employeeServiceImpl.updateEmployeeById(1, employeeDto)).thenReturn(actualList.get(2));
             assertThat(responseDto.equals(appController.updateEmployee(1, employeeDto))).isEqualTo(true);
@@ -91,7 +91,7 @@ class AppControllerTest {
 
     @Test
     public void deleteEmployeeTest() {
-        ResponseDto responseDto = new ResponseDto(null, HttpStatus.OK.value());
+        ResponseDto<Employee> responseDto = new ResponseDto<>(null, HttpStatus.OK.value());
         try {
             when(employeeServiceImpl.deleteEmployeeById(1)).thenReturn(actualList.get(0));
             assertThat(responseDto.equals(appController.deleteEmployee(1))).isEqualTo(true);

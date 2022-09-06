@@ -26,17 +26,17 @@ public class AppController {
 
     @PostMapping("/newuser")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto createUser(@RequestBody UserDto userDto) throws AppGeneralException {
+    public ResponseDto<User> createUser(@RequestBody UserDto userDto) throws AppGeneralException {
         User user = userServiceImpl.saveUser(userDto);
-        return new ResponseDto(null, HttpStatus.CREATED.value());
+        return new ResponseDto<>(null, HttpStatus.CREATED.value());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(Authentication authentication) {
+    public ResponseDto<User> login(Authentication authentication) {
         if (authentication.isAuthenticated()) {
-            return new ResponseEntity<>(new ResponseDto(null, HttpStatus.OK.value()), HttpStatus.OK);
+            return new ResponseDto<>(null, HttpStatus.OK.value());
         }
-        return new ResponseEntity<>(new ResponseDto(null, HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
+        return new ResponseDto<>(null, HttpStatus.UNAUTHORIZED.value());
     }
 
     @PostMapping("/logout")
@@ -45,38 +45,38 @@ public class AppController {
 
     @GetMapping("/employee")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto getAllEmployee(Authentication authentication) {
+    public ResponseDto<List<Employee>> getAllEmployee(Authentication authentication) {
         List<Employee> list = employeeServiceImpl.getAllEmployeeByManager(authentication.getName());
-        return new ResponseDto(list, HttpStatus.OK.value());
+        return new ResponseDto<>(list, HttpStatus.OK.value());
     }
 
     @GetMapping("/employee/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto getEmployee(@PathVariable("id") Integer id) throws AppGeneralException {
+    public ResponseDto<Employee> getEmployee(@PathVariable("id") Integer id) throws AppGeneralException {
         Employee employee = employeeServiceImpl.getEmployeeById(id);
-        return new ResponseDto(employee, HttpStatus.OK.value());
+        return new ResponseDto<>(employee, HttpStatus.OK.value());
     }
 
     @PostMapping("/employee")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto addEmployee(@RequestBody EmployeeDto employeeDto) {
+    public ResponseDto<Employee> addEmployee(@RequestBody EmployeeDto employeeDto) {
         Employee employee = employeeServiceImpl.saveEmployee(employeeDto);
-        return new ResponseDto(employee, HttpStatus.CREATED.value());
+        return new ResponseDto<>(employee, HttpStatus.CREATED.value());
     }
 
     @PutMapping("/employee/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto updateEmployee(@PathVariable("id") Integer id,
-                                      @RequestBody EmployeeDto employeeDto) throws AppGeneralException {
+    public ResponseDto<Employee> updateEmployee(@PathVariable("id") Integer id,
+                                                @RequestBody EmployeeDto employeeDto) throws AppGeneralException {
         Employee updateEmp = employeeServiceImpl.updateEmployeeById(id, employeeDto);
-        return new ResponseDto(updateEmp, HttpStatus.OK.value());
+        return new ResponseDto<>(updateEmp, HttpStatus.CREATED.value());
     }
 
     @DeleteMapping("/employee/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto deleteEmployee(@PathVariable("id") Integer id) throws AppGeneralException {
+    public ResponseDto<Employee> deleteEmployee(@PathVariable("id") Integer id) throws AppGeneralException {
         Employee employee = employeeServiceImpl.deleteEmployeeById(id);
-        return new ResponseDto(null, HttpStatus.OK.value());
+        return new ResponseDto<>(null, HttpStatus.OK.value());
     }
 
 }

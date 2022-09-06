@@ -12,6 +12,6 @@ public class AppExceptionHandler {
     @ExceptionHandler(AppGeneralException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseDto handleAppGeneralException(AppGeneralException exception) {
-        return new ResponseDto(null, HttpStatus.INTERNAL_SERVER_ERROR.value(), new ErrorDto(ErrorCode.valueOf(exception.getMessage())));
+        return new ResponseDto<>(null, HttpStatus.INTERNAL_SERVER_ERROR.value(), new ErrorDto(ErrorCode.valueOf(exception.getMessage())));
     }
 }
