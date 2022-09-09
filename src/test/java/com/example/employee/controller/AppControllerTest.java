@@ -2,6 +2,7 @@ package com.example.employee.controller;
 
 import com.example.employee.AppStubs;
 import com.example.employee.dto.EmployeeDto;
+import com.example.employee.dto.PageEmployeeDto;
 import com.example.employee.dto.ResponseDto;
 import com.example.employee.dto.UserDto;
 import com.example.employee.exception.AppGeneralException;
@@ -53,9 +54,11 @@ class AppControllerTest {
     public void getAllEmployeeTest() {
         String manager = "green";
         Authentication authentication = new UsernamePasswordAuthenticationToken(manager, null, new ArrayList<>());
-        ResponseDto<List<Employee>> responseDto = new ResponseDto<>(expectedList, HttpStatus.OK.value());
-        when(employeeServiceImpl.getAllEmployeeByManager(manager)).thenReturn(actualList);
-        assertThat(responseDto.equals(appController.getAllEmployee(authentication))).isEqualTo(true);
+        ResponseDto<PageEmployeeDto> expectedResponseDto = new ResponseDto<>(AppStubs.expectedPageEmployeeDto, HttpStatus.OK.value());
+        when(employeeServiceImpl.getAllEmployeeByManager(1, 10, "id", "ascending", 0, "a", "a", "it", "green"))
+                .thenReturn(AppStubs.actualPageEmployeeDto);
+        assertThat(expectedResponseDto.equals(appController.getAllEmployee(authentication, 1, 10, "id", "ascending", 0, "a", "a", "it")))
+                .isEqualTo(true);
     }
 
     @Test

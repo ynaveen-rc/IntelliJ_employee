@@ -1,6 +1,7 @@
 package com.example.employee.controller;
 
 import com.example.employee.dto.EmployeeDto;
+import com.example.employee.dto.PageEmployeeDto;
 import com.example.employee.dto.ResponseDto;
 import com.example.employee.dto.UserDto;
 import com.example.employee.exception.AppGeneralException;
@@ -10,11 +11,8 @@ import com.example.employee.service.EmployeeServiceImpl;
 import com.example.employee.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -43,12 +41,33 @@ public class AppController {
     public void logout(Authentication authentication) {
     }
 
-    @GetMapping("/employee")
+    @GetMapping("/employees")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<List<Employee>> getAllEmployee(Authentication authentication) {
-        List<Employee> list = employeeServiceImpl.getAllEmployeeByManager(authentication.getName());
-        return new ResponseDto<>(list, HttpStatus.OK.value());
+    public ResponseDto<PageEmployeeDto> getAllEmployee(Authentication authentication,
+                                                       @RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
+                                                       @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                                       @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
+                                                       @RequestParam(name = "sortDirection", defaultValue = "ascending") String sortDirection,
+                                                       @RequestParam(name = "id", defaultValue = "0") int id,
+                                                       @RequestParam(name = "empName", defaultValue = "") String empName,
+                                                       @RequestParam(name = "empMail", defaultValue = "") String empMail,
+                                                       @RequestParam(name = "department", defaultValue = "") String department) {
+        PageEmployeeDto pageEmployeeDto = employeeServiceImpl.getAllEmployeeByManager(pageNo, pageSize, sortBy, sortDirection, id, empName, empMail, department, authentication.getName());
+        return new ResponseDto<>(pageEmployeeDto, HttpStatus.OK.value());
     }
+
+//    @GetMapping("/employeesSearch")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseDto<PageEmployeeDto> getAllEmployeeFilter(Authentication authentication,
+//                                                             @RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
+//                                                             @RequestParam(name = "size", defaultValue = "10") int size,
+//                                                             @RequestParam(name = "id", defaultValue = "0") int id,
+//                                                             @RequestParam(name = "empName", defaultValue = "") String empName,
+//                                                             @RequestParam(name = "empMail", defaultValue = "") String empMail,
+//                                                             @RequestParam(name = "department", defaultValue = "") String department) {
+//        PageEmployeeDto pageEmployeeDto = employeeServiceImpl.getAllEmployeeByManagerFilter(id, empName, empMail, department, authentication.getName(), pageNo, size);
+//        return new ResponseDto<>(pageEmployeeDto, HttpStatus.OK.value());
+//    }
 
     @GetMapping("/employee/{id}")
     @ResponseStatus(HttpStatus.OK)

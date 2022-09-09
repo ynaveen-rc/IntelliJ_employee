@@ -6,20 +6,20 @@ import java.util.Objects;
 public class ResponseDto<T> {
     private Date timeStamp;
     private Integer httpStatus;
-    private T data;
+    private T results;
     private ErrorDto error;
 
-    public ResponseDto() {
-    }
+//    public ResponseDto() {
+//    }
 
-    public ResponseDto(T data, Integer httpStatus) {
-        this.data = data;
+    public ResponseDto(T results, Integer httpStatus) {
+        this.results = results;
         this.httpStatus = httpStatus;
         this.timeStamp = new Date();
     }
 
-    public ResponseDto(T data, Integer httpStatus, ErrorDto error) {
-        this.data = data;
+    public ResponseDto(T results, Integer httpStatus, ErrorDto error) {
+        this.results = results;
         this.httpStatus = httpStatus;
         this.timeStamp = new Date();
         this.error = error;
@@ -33,8 +33,8 @@ public class ResponseDto<T> {
         return httpStatus;
     }
 
-    public T getData() {
-        return data;
+    public T getResults() {
+        return results;
     }
 
     public ErrorDto getError() {
@@ -46,11 +46,11 @@ public class ResponseDto<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResponseDto<?> that = (ResponseDto<?>) o;
-        return Objects.equals(httpStatus, that.httpStatus) && Objects.equals(data, that.data) && Objects.equals(error, that.error);
+        return Objects.equals(httpStatus, that.httpStatus) && Objects.equals(results, that.results) && Objects.equals(error, that.error);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(httpStatus, data, error);
+        return Objects.hash(httpStatus, results, error);
     }
 }

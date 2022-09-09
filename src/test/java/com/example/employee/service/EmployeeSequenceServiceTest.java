@@ -31,6 +31,8 @@ class EmployeeSequenceServiceTest {
     @MockBean
     EmployeeRepo employeeRepo;
     @MockBean
+    EmployeeServiceImpl employeeServiceImpl;
+    @MockBean
     MongoOperations mongoOperations;
 
     @Test

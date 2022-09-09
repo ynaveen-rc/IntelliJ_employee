@@ -2,7 +2,7 @@ package com.example.employee.dto;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class UserDto {
     private String id;
     private String password;

@@ -2,7 +2,7 @@ package com.example.employee.dto;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class EmployeeDto {
 
     private String empName;

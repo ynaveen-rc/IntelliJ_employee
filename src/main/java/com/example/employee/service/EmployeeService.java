@@ -1,14 +1,15 @@
 package com.example.employee.service;
 
 import com.example.employee.dto.EmployeeDto;
+import com.example.employee.dto.PageEmployeeDto;
 import com.example.employee.exception.AppGeneralException;
 import com.example.employee.model.Employee;
 
-import java.util.List;
-
 public interface EmployeeService {
 
-    List<Employee> getAllEmployeeByManager(String manager);
+//    PageEmployeeDto getAllEmployeeByManager(String manager, int pageNo, int pageSize, String sortBy, String sortDirection);
+
+    PageEmployeeDto getAllEmployeeByManager(int pageNo, int pageSize, String sortBy, String sortDirection, int id, String empName, String empMail, String department, String manager);
 
     Employee getEmployeeById(Integer id) throws AppGeneralException;
 

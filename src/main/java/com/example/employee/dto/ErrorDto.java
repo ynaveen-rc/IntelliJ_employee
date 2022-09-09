@@ -3,7 +3,7 @@ package com.example.employee.dto;
 import com.example.employee.exception.ErrorCode;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class ErrorDto {
     private String code;
     private String message;
